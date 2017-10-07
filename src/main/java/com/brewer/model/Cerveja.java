@@ -12,7 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.brewer.validation.Sku;
@@ -32,25 +36,36 @@ public class Cerveja {
 	@NotBlank(message = "Nome é obrigatório")
 	private String nome;
 	
+	@NotBlank(message = "A descrção é obrigatória")
 	@Size(min = 1, max = 50, message = "O tamanho da descrição deve estar entre 1 e 50")
 	private String descricao;
 	
+	@NotNull(message = "O valor é obrigatório")
+	@DecimalMin("0.01")
+	@DecimalMax(value = "9999999.99", message = "O valor da cerveja deve ser menor que R$ 9.999.999,99")
 	private BigDecimal valor;
 	
+	@NotNull(message = "O teor alcóolico é obrigatório")
+	@DecimalMax(value = "100.0", message = "O teor alcóolico deve ser menor que 100")
 	@Column(name = "teor_alcoolico")
 	private BigDecimal teorAlcoolico;
 	
+	@DecimalMax(value = "100.0", message = "A comissão deve ser igual ou menor que 100")
 	private BigDecimal comissao;
 	
+	@Max(value = 9999, message = "A quantidade em estoque deve ser menor que 9.999")
 	@Column(name = "quantidade_estoque")
 	private Integer quantidadeEstoque;
 	
+	@NotNull(message = "A origem é obrigatória")
 	@Enumerated(EnumType.STRING)
 	private Origem origem;
 	
+	@NotNull(message = "O sabor é obrigatório")
 	@Enumerated(EnumType.STRING)
 	private Sabor sabor;
 	
+	@NotNull(message = "O estilo é obrigatório")
 	@ManyToOne
 	@JoinColumn(name = "id_estilo")
 	private Estilo estilo;
